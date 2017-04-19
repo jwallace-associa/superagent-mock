@@ -1,7 +1,7 @@
 {
   "name": "superagent-mock",
   "description": "superagent plugin allowing to simulate HTTP calls by returning data fixtures based on the requested URL.",
-  "version": "3.3.0",
+  "version": "3.4.0",
   "keywords": [
     "superagent",
     "mock",
@@ -15,15 +15,25 @@
     "url": "https://github.com/M6Web/superagent-mock"
   },
   "peerDependencies": {
-    "superagent": "^3.4.4"
+    "superagent": "^3.5.2"
   },
   "devDependencies": {
-    "eslint": "0.12.0",
-    "nodeunit": "0.10.2",
-    "superagent": "^3.4.4"
+    "babel-cli": "^6.24.1",
+    "babel-jest": "^19.0.0",
+    "babel-preset-env": "^1.4.0",
+    "cross-env": "^4.0.0",
+    "eslint": "^3.19.0",
+    "jest": "^19.0.2",
+    "rimraf": "^2.6.1",
+    "superagent": "^3.5.2"
   },
   "scripts": {
-    "test": "nodeunit ./tests",
-    "lint": "eslint ./lib"
+    "clean": "rimraf lib es",
+    "test": "cross-env BABEL_ENV=commonjs jest --config .jestrc",
+    "lint": "eslint ./src ./tests",
+    "build:commonjs": "cross-env BABEL_ENV=commonjs babel src --out-dir lib",
+    "build:es": "cross-env BABEL_ENV=es babel src --out-dir es",
+    "build": "yarn build:commonjs && yarn build:es",
+    "prepublish": "yarn run clean && yarn lint && yarn build"
   }
 }
